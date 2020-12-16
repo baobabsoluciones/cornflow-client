@@ -43,6 +43,7 @@ class CornFlow(object):
             urljoin(self.url, 'login/'),
             json={"email": email, "password": pwd})
         self.token = response.json()["token"]
+        # TODO: should this return even be necessary?
         return self.token
 
     @ask_token
