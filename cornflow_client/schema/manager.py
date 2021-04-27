@@ -161,6 +161,61 @@ class SchemaManager:
                 outfile.write(draft_schema)
         return draft_schema
 
+    def to_template(self):
+        """
+
+        This function assumes certain structure for the jsonschema.
+        For now, three types of tables exist: array of objects, arrays and objects.
+        {
+        table1: [{col1: a, col2: b}, {col1: aa, col2: bb}, ...],
+        table2: [1, 2, 3, ],
+        table3: {config1: a, config2: b},
+        }
+
+        """
+        master_table_name = '_README'
+        example = dict(integer=1, string="string")
+        tables = {master_table_name: []}
+        for key, value in self.jsonschema['properties'].items():
+            if key.startswith("$"):
+                continue
+            description = value.get('description', "")
+            # update the master table of tables:
+            tables[master_table_name].append(dict(name=key, description=description))
+            # several cases here:
+            if value['type'] == 'object':
+                # two columns: key-value
+                # TODO: this
+                properties = value['properties']
+                continue
+            # we're here, we're probably in an array
+            assert value['type'] == 'array'
+            items = value['items']
+            if items['type'] != 'object':
+                # only one column with name
+                tables[key] = [example[items['type']]]
+                continue
+            # here is a regular table:
+            props = items['properties']
+            # if there are array of single values, we flatten them into one column:
+            p_arrays = {k: v['items'] for k, v in props.items()
+                        if v['type']=='array' and v['items']['type'] != 'object'}
+            # if a column is an array of objects: we flatten the object into several columns
+            p_arrays_objects = {'{}.{}'.format(k, kk): vv['items'] for k, v in props.items()
+                                if v['type'] == 'array' and v['items']['type'] == 'object'
+                                for kk, vv in v['items']['properties'].items()
+                                }
+            # the rest of columns stay the same
+            p_no_array = {k: v for k, v in props.items() if v['type'] != 'array'}
+            props = {**p_arrays, **p_no_array, **p_arrays_objects}
+            required = items['required']
+            rm_keys = props.keys() - set(required)
+            # order is: first required in order, then the rest:
+            one_line = {k: example[props[k]['type']] for k in required}
+            for k in rm_keys:
+                one_line[k] = example[props[k]['type']]
+            tables[key] = [one_line]
+        return tables
 
     @staticmethod
     def load_json(path):

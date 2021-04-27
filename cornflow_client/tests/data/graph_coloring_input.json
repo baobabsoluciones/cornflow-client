@@ -3,12 +3,14 @@
     "type": "object",
     "properties": {
         "nodes": {
+            "description": "List of all nodes in the problem",
             "type": "array",
             "items": {
                 "type": "integer"
             }
         },
         "pairs": {
+            "description": "Pairs of nodes that cannot share the same color",
             "type": "array",
             "items": {
                 "type": "object",

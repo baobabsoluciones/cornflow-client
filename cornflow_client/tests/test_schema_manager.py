@@ -113,6 +113,17 @@ class TestSchemaManager(TestCase):
         content['objective']['another_something_new'] = 1
         marshmallow_object().load(content)
 
+    def test_to_excel(self):
+        sm = SchemaManager.from_filepath(self.get_data_file('graph_coloring_input.json'))
+        template = sm.to_template()
+        import pandas as pd
+        dataframes = {k: pd.DataFrame.from_dict(v) for k, v in template.items()}
+
+    def test_to_excel2(self):
+        sm = SchemaManager.from_filepath(self.get_data_file('hk_data_schema.json'))
+        template = sm.to_template()
+        import pandas as pd
+        dataframes = {k: pd.DataFrame.from_dict(v) for k, v in template.items()}
 
     # TODO: fix this test and uncomment
     # def test_list_of_lists(self):
