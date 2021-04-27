@@ -47,11 +47,11 @@ class DictSchema:
         if required_list is None:
             required_list = []
 
-        schema = [dict(name=name,
+        schema = dict(name=name,
                        type=self._get_type_or_new_schema(item),
                        many=("type" in content and content["type"] == "array"),
-                       required=name in required_list)]
-        schema_dict[DATASCHEMA] += schema
+                       required=name in required_list)
+        schema_dict[DATASCHEMA].append(schema)
 
         return schema
 

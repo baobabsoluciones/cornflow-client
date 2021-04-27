@@ -184,9 +184,9 @@ class SchemaManager:
             tables[master_table_name].append(dict(name=key, description=description))
             # several cases here:
             if value['type'] == 'object':
-                # two columns: key-value
-                # TODO: this
+                # two columns: key-value in two columns
                 properties = value['properties']
+                tables[key] = [dict(key=k, value=example[v['type']]) for k, v in properties.items()]
                 continue
             # we're here, we're probably in an array
             assert value['type'] == 'array'
