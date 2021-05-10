@@ -1,31 +1,24 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	"type": "object",
-	"properties": {
-		"assignment": {
+	"anyOf": [{
+			"type": "object"
+		}, {
 			"type": "array",
 			"items": {
 				"type": "object",
 				"properties": {
-					"period": {
+					"job": {
 						"type": "integer"
 					},
 					"mode": {
 						"type": "integer"
 					},
-					"job": {
+					"period": {
 						"type": "integer"
 					}
 				},
-				"required": [
-					"period",
-					"mode",
-					"job"
-				]
+				"required": ["job", "mode", "period"]
 			}
 		}
-	},
-	"required": [
-		"assignment"
 	]
 }
