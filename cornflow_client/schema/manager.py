@@ -108,9 +108,9 @@ class SchemaManager:
         :return: The schema dictionary
         """ 
 
-        return self.get_schema_dict_obj().get_schema()
+        return self.to_schema_dict_obj().get_schema()
 
-    def get_schema_dict_obj(self):
+    def to_schema_dict_obj(self):
         """
         Returns an DictSchema object equivalent of the jsonschema
 
@@ -128,7 +128,7 @@ class SchemaManager:
         :return: a dict containing the flask marshmallow schemas
         :rtype: Schema()
         """
-        return self.get_schema_dict_obj().to_marshmallow()
+        return self.to_schema_dict_obj().to_marshmallow()
 
     def export_schema_dict(self, path):
         """
