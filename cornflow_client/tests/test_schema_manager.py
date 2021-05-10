@@ -118,7 +118,6 @@ class TestSchemaManager(TestCase):
         template = sm.to_template()
         import pandas as pd
         dataframes = {k: pd.DataFrame.from_dict(v) for k, v in template.items()}
-        self.assertEqual(dataframes['nodes'][0][0], 1)
         self.assertEqual(dataframes['pairs']['n1'][0], 1)
         self.assertEqual(dataframes['pairs'].shape, (1, 2))
 
