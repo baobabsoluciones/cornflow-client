@@ -4,8 +4,11 @@ import json
 import os
 
 
-def get_pulp_jsonschema(filename="pulp_json_schema.json"):
-    filename = os.path.join(os.path.dirname(__file__), "data", filename)
+def get_pulp_jsonschema(filename="pulp_json_schema.json", folder='main'):
+    if folder == "main":
+        filename = os.path.join(os.path.dirname(__file__), "data", filename)
+    elif folder == "test":
+        filename = os.path.join(os.path.dirname(__file__), "tests", "data", filename)
     with open(filename, "r") as f:
         content = json.load(f)
     return content
