@@ -219,7 +219,7 @@ class CornFlow(object):
         response = self.put_api_for_id("dag/", id=execution_id, payload=kwargs)
         if response.status_code != 200:
             raise CornFlowApiError(
-                "Expected a code 201, got a {} error instead: {}".format(
+                "Expected a code 200, got a {} error instead: {}".format(
                     response.status_code, response.text
                 )
             )
