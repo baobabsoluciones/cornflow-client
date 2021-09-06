@@ -1,8 +1,15 @@
-from cornflow_client.core import MetaInstanceSolution, Application, MetaExperiment
+from cornflow_client import InstanceCore, SolutionCore, ApplicationCore, ExperimentCore
 import unittest
 
 
 class TestABC(unittest.TestCase):
+    def test_good_solution(self):
+        GoodSolution(dict(a=1))
+
+    def test_bad_solution(self):
+        must_fail = lambda: BadSolution(dict(a=1))
+        self.assertRaises(TypeError, must_fail)
+
     def test_good_instance(self):
         GoodInstance(dict(a=1))
 
@@ -11,10 +18,10 @@ class TestABC(unittest.TestCase):
         self.assertRaises(TypeError, must_fail)
 
     def test_experiment(self):
-        Experiment(GoodInstance(dict()), GoodInstance(dict()))
+        GoodExperiment(GoodInstance(dict()), GoodSolution(dict()))
 
     def test_bad_experiment(self):
-        must_fail = lambda: BadExmperiment(GoodInstance(dict()), GoodInstance(dict()))
+        must_fail = lambda: BadExperiment(GoodInstance(dict()), GoodSolution(dict()))
         self.assertRaises(TypeError, must_fail)
 
     def test_good_application(self):
@@ -25,18 +32,29 @@ class TestABC(unittest.TestCase):
         self.assertRaises(TypeError, must_fail)
 
 
-class GoodInstance(MetaInstanceSolution):
+class GoodInstance(InstanceCore):
     def schema(self):
         return dict()
 
 
-class BadInstance(MetaInstanceSolution):
+class BadInstance(InstanceCore):
     @classmethod
     def from_dict(cls, data: dict) -> "BadInstance":
         return cls(data)
 
 
-class Experiment(MetaExperiment):
+class GoodSolution(SolutionCore):
+    def schema(self):
+        return dict()
+
+
+class BadSolution(SolutionCore):
+    @classmethod
+    def from_dict(cls, data: dict) -> "BadSolution":
+        return cls(data)
+
+
+class GoodExperiment(ExperimentCore):
     def solve(self, options: dict):
         raise NotImplementedError()
 
@@ -47,19 +65,20 @@ class Experiment(MetaExperiment):
         return dict()
 
 
-class BadExmperiment(MetaExperiment):
+class BadExperiment(ExperimentCore):
     def solve(self, options) -> dict:
         return dict()
 
 
-class GoodApp(Application):
+class GoodApp(ApplicationCore):
     name = "123"
     instance = GoodInstance
-    solvers = dict(default=Experiment)
+    solution = GoodSolution
+    solvers = dict(default=GoodExperiment)
     schema = dict()
     test_cases = [dict()]
 
 
-class BadApp(Application):
+class BadApp(ApplicationCore):
     name = "123"
-    solvers = dict(default=Experiment)
+    solvers = dict(default=GoodExperiment)

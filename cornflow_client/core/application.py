@@ -1,7 +1,8 @@
-from typing import Type, Dict, List
+from typing import Type, Dict, List, Tuple
 from timeit import default_timer as timer
-from .instance_solution import MetaInstanceSolution
-from .experiment import MetaExperiment
+from .instance import InstanceCore
+from .solution import SolutionCore
+from .experiment import ExperimentCore
 from abc import ABC, abstractmethod
 from cornflow_client.constants import (
     STATUS_OPTIMAL,
@@ -14,7 +15,7 @@ from cornflow_client.constants import (
 )
 
 
-class Application(ABC):
+class ApplicationCore(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
@@ -22,7 +23,12 @@ class Application(ABC):
 
     @property
     @abstractmethod
-    def instance(self) -> Type[MetaInstanceSolution]:
+    def instance(self) -> Type[InstanceCore]:
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def solution(self) -> Type[SolutionCore]:
         raise NotImplementedError()
 
     @property
@@ -40,10 +46,10 @@ class Application(ABC):
 
     @property
     @abstractmethod
-    def solvers(self) -> Dict[str, Type[MetaExperiment]]:
+    def solvers(self) -> Dict[str, Type[ExperimentCore]]:
         raise NotImplementedError()
 
-    def solve(self, data: dict, config: dict):
+    def solve(self, data: dict, config: dict) -> Tuple[Dict, str, Dict]:
         """
         :param data: json for the problem
         :param config: execution configuration, including solver
@@ -91,10 +97,10 @@ class Application(ABC):
             log["sol_code"] = SOLUTION_STATUS_FEASIBLE
         return sol, "", log
 
-    def get_solver(self, name: str = "default") -> Type[MetaExperiment]:
+    def get_solver(self, name: str = "default") -> Type[ExperimentCore]:
         return self.solvers.get(name)
 
-    def get_default_solver_name(self):
+    def get_default_solver_name(self) -> str:
         return self.schema["properties"]["solver"]["default"]
 
 

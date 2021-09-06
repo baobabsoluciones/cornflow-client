@@ -4,7 +4,7 @@ from typing import List
 from pytups import OrderSet, SuperDict
 
 
-class MetaInstanceSolution(ABC):
+class InstanceSolutionCore(ABC):
     def __init__(self, data: dict):
         self.data = SuperDict.from_dict(data)
 
