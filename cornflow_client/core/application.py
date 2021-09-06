@@ -1,4 +1,4 @@
-from typing import Type, Dict
+from typing import Type, Dict, List
 from timeit import default_timer as timer
 from .instance_solution import MetaInstanceSolution
 from .experiment import MetaExperiment
@@ -27,6 +27,19 @@ class Application(ABC):
 
     @property
     @abstractmethod
+    def schema(self) -> dict:
+        """
+        returns the configuration schema used for the solve() method
+        """
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
+    def test_cases(self) -> List[Dict]:
+        raise NotImplementedError()
+
+    @property
+    @abstractmethod
     def solvers(self) -> Dict[str, Type[MetaExperiment]]:
         raise NotImplementedError()
 
@@ -37,7 +50,9 @@ class Application(ABC):
         :return: solution and log
         """
         print("Solving the model")
-        solver = config.get("solver", "default")
+        solver = config.get("solver")
+        if solver is None:
+            solver = self.get_default_solver_name()
         solver_class = self.get_solver(name=solver)
         if solver_class is None:
             raise NoSolverException("Solver {} is not available".format(solver))
@@ -53,7 +68,7 @@ class Application(ABC):
             print(e)
             status = 0
 
-        sol = None  # export everything:
+        sol = None
         status_conv = {
             STATUS_OPTIMAL: "Optimal",
             STATUS_TIME_LIMIT: "Time limit",
@@ -69,6 +84,8 @@ class Application(ABC):
             sol_code=SOLUTION_STATUS_INFEASIBLE,
         )
         # check if there is a solution
+        # TODO: we need to extract the solution status too
+        #  because there may be already an initial solution in the solver
         if algo.solution is not None and len(algo.solution.data):
             sol = algo.solution.to_dict()
             log["sol_code"] = SOLUTION_STATUS_FEASIBLE
@@ -76,6 +93,9 @@ class Application(ABC):
 
     def get_solver(self, name: str = "default") -> Type[MetaExperiment]:
         return self.solvers.get(name)
+
+    def get_default_solver_name(self):
+        return self.schema["properties"]["solver"]["default"]
 
 
 class NoSolverException(Exception):

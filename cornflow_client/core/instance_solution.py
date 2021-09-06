@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 import json
+from typing import List
+from pytups import OrderSet, SuperDict
 
 
 class MetaInstanceSolution(ABC):
     def __init__(self, data: dict):
-        self.data = data
+        self.data = SuperDict.from_dict(data)
 
     @property
     def data(self) -> dict:
@@ -15,13 +17,11 @@ class MetaInstanceSolution(ABC):
         self._data = value
 
     @classmethod
-    @abstractmethod
-    def from_dict(self, data: dict) -> "MetaInstanceSolution":
-        raise NotImplementedError()
+    def from_dict(cls, data: dict) -> "MetaInstanceSolution":
+        return cls(data)
 
-    @abstractmethod
     def to_dict(self) -> dict:
-        raise NotImplementedError()
+        return self.data
 
     @classmethod
     def from_json(cls, path: str) -> "MetaInstanceSolution":
@@ -34,7 +34,13 @@ class MetaInstanceSolution(ABC):
         with open(path, "w") as f:
             json.dump(data, f, indent=4, sort_keys=True)
 
-    @staticmethod
+    @property
     @abstractmethod
-    def get_schema() -> dict:
+    def schema(self) -> dict:
         raise NotImplementedError()
+
+    def new_set(self, seq: List):
+        """
+        Returns a new ordered set
+        """
+        return OrderSet(seq)

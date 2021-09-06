@@ -26,15 +26,7 @@ class TestABC(unittest.TestCase):
 
 
 class GoodInstance(MetaInstanceSolution):
-    def to_dict(self):
-        return self.data
-
-    @classmethod
-    def from_dict(cls, data: dict) -> "GoodInstance":
-        return cls(data)
-
-    @staticmethod
-    def get_schema():
+    def schema(self):
         return dict()
 
 
@@ -42,10 +34,6 @@ class BadInstance(MetaInstanceSolution):
     @classmethod
     def from_dict(cls, data: dict) -> "BadInstance":
         return cls(data)
-
-    @staticmethod
-    def get_schema():
-        return dict()
 
 
 class Experiment(MetaExperiment):
@@ -55,22 +43,21 @@ class Experiment(MetaExperiment):
     def get_objective(self) -> float:
         raise NotImplementedError()
 
-    def get_schema(self) -> dict:
-        return dict()
-
     def check_solution(self, *args, **kwargs) -> dict:
         return dict()
 
 
 class BadExmperiment(MetaExperiment):
-    def solve(self, options) -> float:
-        return 1
+    def solve(self, options) -> dict:
+        return dict()
 
 
 class GoodApp(Application):
     name = "123"
     instance = GoodInstance
     solvers = dict(default=Experiment)
+    schema = dict()
+    test_cases = [dict()]
 
 
 class BadApp(Application):
