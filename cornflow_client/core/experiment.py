@@ -52,7 +52,8 @@ class ExperimentCore(ABC):
     def get_objective(self) -> float:
         """
         Mandatory method
-        returns the value of the current solution, represented by a number
+
+        :return: the value of the current solution, represented by a number
         """
         pass
 
@@ -60,7 +61,8 @@ class ExperimentCore(ABC):
     def check_solution(self, *args, **kwargs) -> Dict[str, Dict]:
         """
         Mandatory method
-        returns a dictionary of dictionaries. Each dictionary represents one type of error. Each of the elements
+
+        :return: a dictionary of dictionaries. Each dictionary represents one type of error. Each of the elements
         inside represents one error of that particular type.
         """
         pass

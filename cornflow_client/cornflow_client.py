@@ -133,7 +133,7 @@ class CornFlow(object):
     @log_call
     def is_alive(self):
         """
-        Ask the server if it's alive
+        Asks the server if it's alive
         """
         response = requests.get(urljoin(self.url, "health/"))
         if response.status_code == 200:
@@ -178,7 +178,7 @@ class CornFlow(object):
 
         :param dict data: data according to json-schema for the problem
         :param str name: name for instance
-        :param str description: description of instance
+        :param str description: description of the instance
         :param str schema: name of problem to solve
         """
         if name is None:
@@ -200,13 +200,13 @@ class CornFlow(object):
         self, name, schema, data=None, parent_id=None, description="", solution=None
     ):
         """
-        Uploads a case to the server.
+        Uploads a case to the server
 
         :param dict data: data according to json-schema for the problem
-        :param str name: name for instance
-        :param str description: description of instance
-        :param str schema: name of problem to solve
-        :param str parent_id: id of the parent in the tree structure
+        :param str name: name for case
+        :param str description: description of case
+        :param str schema: name of problem of case
+        :param str parent_id: id of the parent directory in the tree structure
         :param dict solution: optional solution data to store inside case
         """
         payload = dict(
@@ -237,8 +237,9 @@ class CornFlow(object):
         """
         Uploads a file to the server to be parsed into an instance
 
+        :param str filename: path to filename to upload
         :param str name: name for instance
-        :param str description: description of instance
+        :param str description: description of the instance
         """
         with open(filename, "rb") as file:
             response = self.create_api(
@@ -266,11 +267,11 @@ class CornFlow(object):
         schema="solve_model_dag",
     ):
         """
-        Creates an execution from an uploaded instance
+        Creates an execution from a (previously) uploaded instance
 
         :param str instance_id: id for the instance
-        :param str name: name for instance
-        :param str description: description of instance
+        :param str name: name for the execution
+        :param str description: description of the execution
         :param dict config: execution configuration
         :param str schema: name of the problem to solve
         """
@@ -337,13 +338,14 @@ class CornFlow(object):
     @ask_token
     def manual_execution(self, instance_id, config, name, **kwargs):
         """
-        Creates an execution from solution that is uploaded
+        Uploads an execution from solution data
 
         :param str instance_id: id for the instance
-        :param str name: name for instance
-        :param str description: description of instance
+        :param str name: name for execution
+        :param str description: description of the execution
         :param dict config: execution configuration
         :param str schema: name of the problem to solve
+        :param kwargs: contents of the solution (inside data)
         """
         payload = dict(config=config, instance_id=instance_id, name=name, **kwargs)
         response = self.create_api("dag/", json=payload)
@@ -396,7 +398,7 @@ class CornFlow(object):
     @ask_token
     def get_solution(self, execution_id):
         """
-        Downloads the solution for an execution
+        Downloads the solution data for an execution
 
         :param str execution_id: id for the execution
         """
