@@ -69,8 +69,8 @@ class ApplicationCore(ABC):
         Mandatory property
 
         :return: a list of datasets following the json-schema.
-        if the list includes a tuple of two dictionaries,
-        it's because it's an instance and it's solution
+          if the list includes a tuple of two dictionaries,
+          it's because it's an instance and it's solution
         """
         raise NotImplementedError()
 
