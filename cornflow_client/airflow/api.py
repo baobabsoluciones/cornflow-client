@@ -117,6 +117,18 @@ class Airflow(object):
         response = self.get_all_variables()
         return [dict(name=variable["key"]) for variable in response["variables"]]
 
+    def get_all_dags(self, method="GET"):
+        url = "{}/dags".format(self.url)
+        return self.request_headers_auth(method=method, url=url)
+
+    def get_internal_dags(self, method="GET"):
+        url = "{}/dags?tags=internal".format(self.url)
+        return self.request_headers_auth(method=method, url=url)
+
+    def get_model_dags(self, method="GET"):
+        url = "{}/dags?tags=model".format(self.url)
+        return self.request_headers_auth(method=method, url=url)
+
 
 def get_schema(config, dag_name, schema="instance"):
     """
