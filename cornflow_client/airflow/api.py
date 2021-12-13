@@ -3,7 +3,7 @@ from requests.exceptions import ConnectionError, HTTPError
 import json
 from requests.auth import HTTPBasicAuth
 from cornflow_client import SchemaManager
-from marshmallow import ValidationError, INCLUDE
+from marshmallow import ValidationError
 
 from cornflow_client.constants import AirflowError, InvalidUsage
 
