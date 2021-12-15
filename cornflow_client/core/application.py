@@ -33,7 +33,6 @@ class ApplicationCore(ABC):
         raise NotImplementedError()
 
     @property
-    @abstractmethod
     def description(self) -> Union[str, None]:
         """
         Optional property
