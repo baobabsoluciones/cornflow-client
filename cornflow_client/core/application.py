@@ -34,6 +34,16 @@ class ApplicationCore(ABC):
 
     @property
     @abstractmethod
+    def description(self) -> Union[str, None]:
+        """
+        Optional property
+
+        :return: the description of the class
+        """
+        return None
+
+    @property
+    @abstractmethod
     def instance(self) -> Type[InstanceCore]:
         """
         Mandatory property
