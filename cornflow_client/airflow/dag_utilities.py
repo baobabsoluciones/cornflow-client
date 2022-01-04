@@ -130,7 +130,12 @@ def cf_solve(fun, dag_name, secrets, **kwargs):
     client = connect_to_cornflow(secrets)
     exec_id = kwargs["dag_run"].conf["exec_id"]
     execution_data = client.get_data(exec_id)
-    data = execution_data["data"]
+    try:
+        data = execution_data["data"]
+    except KeyError as e:
+        print(execution_data)
+        print(e)
+
     config = execution_data["config"]
     try:
         solution, log, log_json = fun(data, config)
