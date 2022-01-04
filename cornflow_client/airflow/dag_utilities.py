@@ -80,6 +80,7 @@ def connect_to_cornflow(secrets):
     if conn.path:
         url = urljoin(url, conn.path)
     print(f"FINAL URL: {url}")
+    print(f"USER: {conn.username}. PASSWORD: {conn.password}")
     airflow_user = CornFlow(url=url)
     airflow_user.login(username=conn.username, pwd=conn.password)
     return airflow_user
