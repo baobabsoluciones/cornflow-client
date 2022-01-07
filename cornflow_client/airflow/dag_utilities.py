@@ -69,7 +69,6 @@ def connect_to_cornflow(secrets):
     # This secret comes from airflow configuration
     print("Getting connection information from ENV VAR=CF_URI")
     uri = secrets.get_conn_uri("CF_URI")
-    print(f"CF_URI: {uri}")
     conn = urlparse(uri)
     scheme = conn.scheme
     if scheme == "cornflow":
@@ -79,8 +78,6 @@ def connect_to_cornflow(secrets):
         url += ":{uri.port}".format(uri=conn)
     if conn.path:
         url = urljoin(url, conn.path)
-    print(f"FINAL URL: {url}")
-    print(f"USER: {conn.username}. PASSWORD: {conn.password}")
     airflow_user = CornFlow(url=url)
     airflow_user.login(username=conn.username, pwd=conn.password)
     return airflow_user
