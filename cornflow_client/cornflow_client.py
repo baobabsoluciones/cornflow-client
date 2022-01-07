@@ -621,7 +621,9 @@ class CornFlow(object):
         :param dict payload: data to edit
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
-        response = self.put_api_for_id(api="case", id=reference_id, payload=payload)
+        response = self.put_api_for_id(
+            api="case", id=reference_id, payload=payload, encoding=encoding
+        )
         return response.json()
 
     @log_call
@@ -635,7 +637,9 @@ class CornFlow(object):
         :param dict payload: data to edit
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
-        response = self.patch_api_for_id(api="case", id=reference_id, payload=payload)
+        response = self.patch_api_for_id(
+            api="case", id=reference_id, payload=payload, encoding=encoding
+        )
         return response.json()
 
     @log_call
@@ -648,7 +652,9 @@ class CornFlow(object):
         :param str reference_id: id for the instance
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
-        response = self.delete_api_for_id(api="instance", id=reference_id)
+        response = self.delete_api_for_id(
+            api="instance", id=reference_id, encoding=encoding
+        )
         return response
 
     @ask_token
@@ -660,7 +666,7 @@ class CornFlow(object):
         :param str dag_name: id for the problem
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
-        response = self.get_api_for_id(api="schema", id=dag_name)
+        response = self.get_api_for_id(api="schema", id=dag_name, encoding=encoding)
         return response.json()
 
     @ask_token
@@ -671,7 +677,7 @@ class CornFlow(object):
 
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
-        return self.get_api("schema").json()
+        return self.get_api("schema", encoding=encoding).json()
 
 
 class CornFlowApiError(Exception):
