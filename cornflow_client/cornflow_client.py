@@ -680,6 +680,7 @@ class CornFlow(object):
         """
         return self.get_api("schema", encoding=encoding).json()
 
+    @log_call
     @ask_token
     @prepare_encoding
     def get_deployed_dags(self, encoding=None):
