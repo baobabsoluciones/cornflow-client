@@ -700,7 +700,7 @@ class CornFlow(object):
         if name is None:
             return {"error": "No dag anme was given"}
         payload = dict(id=name, description=description)
-        response = self.create_api("case/", json=payload, encoding=encoding)
+        response = self.create_api("dag/deployed/", json=payload, encoding=encoding)
         if response.status_code != 201:
             raise CornFlowApiError(
                 "Expected a code 201, got a {} error instead: {}".format(
