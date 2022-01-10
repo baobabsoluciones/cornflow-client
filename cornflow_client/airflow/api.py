@@ -65,6 +65,9 @@ class Airflow(object):
     def update_schemas(self, dag_name="update_all_schemas"):
         return self.consume_dag_run(dag_name, payload={}, method="POST")
 
+    def update_dag_registry(self, dag_name="update_dag_registry"):
+        return self.consume_dag_run(dag_name, payload={}, method="POST")
+
     def get_dag_run_status(self, dag_name, dag_run_id):
         return self.consume_dag_run(
             dag_name, payload=None, dag_run_id=dag_run_id, method="GET"
