@@ -109,6 +109,7 @@ class CornFlow(object):
         """
         api_for_id with a GET request
         """
+
         return self.api_for_id(
             api=api, id=id, post_url=post_url, encoding=encoding, **kwargs, method="get"
         )
@@ -678,6 +679,16 @@ class CornFlow(object):
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
         return self.get_api("schema", encoding=encoding).json()
+
+    @ask_token
+    @prepare_encoding
+    def get_deployed_dags(self, encoding=None):
+        """
+        Downloads the deployed dags in cornflow in order to update them
+
+        :param str encoding: the type of encoding used in the call. Defaults to 'br'
+        """
+        return self.get_api("dag/deployed/", encoding=encoding).json()
 
 
 class CornFlowApiError(Exception):
