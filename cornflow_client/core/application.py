@@ -99,7 +99,7 @@ class ApplicationCore(ABC):
             print("Solving the model")
         validator = Draft7Validator(self.schema)
         if not validator.is_valid(config):
-            error_list = [e for e in validator.iter_errors(data)]
+            error_list = [e for e in validator.iter_errors(config)]
             raise BadConfiguration(
                 "The configuration does not match the schema:\n{}".format(error_list)
             )
