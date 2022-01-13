@@ -14,6 +14,10 @@ from cornflow_client.constants import (
     STATUS_TIME_LIMIT,
     SOLUTION_STATUS_FEASIBLE,
     SOLUTION_STATUS_INFEASIBLE,
+    NoSolverException,
+    BadConfiguration,
+    BadSolution,
+    BadInstance,
 )
 
 
@@ -187,19 +191,3 @@ class ApplicationCore(ABC):
             solution=self.solution.schema,
             config=self.schema,
         )
-
-
-class NoSolverException(Exception):
-    pass
-
-
-class BadConfiguration(Exception):
-    pass
-
-
-class BadInstance(Exception):
-    pass
-
-
-class BadSolution(Exception):
-    pass
