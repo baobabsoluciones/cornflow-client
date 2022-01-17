@@ -394,7 +394,7 @@ class CornFlow(object):
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
         response = self.put_api_for_id(
-            "dag/", id=execution_id, encodingh=encoding, payload=kwargs
+            "dag/", id=execution_id, encoding=encoding, payload=kwargs
         )
         if response.status_code != 200:
             raise CornFlowApiError(
@@ -698,7 +698,7 @@ class CornFlow(object):
         self, name: str = None, description: str = None, encoding=None
     ):
         if name is None:
-            return {"error": "No dag anme was given"}
+            return {"error": "No dag name was given"}
         payload = dict(id=name, description=description)
         response = self.create_api("dag/deployed/", json=payload, encoding=encoding)
         if response.status_code != 201:
