@@ -79,6 +79,26 @@ class SchemaManager:
 
         return len(errors_list) == 0
 
+    def validate_schema(self, print_errors=False):
+        """
+        Validate the loaded jsonschema
+        :param bool print_errors: If true, will print the errors
+
+        :return: True if jsonschema is valid, else False
+        """
+        # Draft7Validator.check_schema(self.get_jsonschema())
+        validation_schema = load_json('../data/schema_validator.json')
+        v = self.validator(validation_schema)
+
+        if v.is_valid(self.get_jsonschema()):
+            return True
+
+        error_list = [e for e in v.iter_errors(self.get_jsonschema())]
+        if print_errors:
+            for e in error_list:
+                print(e)
+        return False
+
     def get_file_errors(self, path):
         """
         Get json file errors according to the loaded jsonschema.
