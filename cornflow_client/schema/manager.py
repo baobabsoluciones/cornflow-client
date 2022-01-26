@@ -7,6 +7,7 @@ from copy import deepcopy
 from genson import SchemaBuilder
 from .dictSchema import DictSchema
 from cornflow_client.core.tools import load_json, save_json
+import os
 
 
 class SchemaManager:
@@ -87,7 +88,8 @@ class SchemaManager:
         :return: True if jsonschema is valid, else False
         """
         # Draft7Validator.check_schema(self.get_jsonschema())
-        validation_schema = load_json('../data/schema_validator.json')
+        path_schema_validator = os.path.join(os.path.dirname(__file__), '../data/schema_validator.json')
+        validation_schema = load_json(path_schema_validator)
         v = self.validator(validation_schema)
 
         if v.is_valid(self.get_jsonschema()):
