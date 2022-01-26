@@ -110,16 +110,18 @@ class InstanceSolutionCore(ABC):
         return cls.from_dict(tables)
 
     @classmethod
-    def __get_parameter_tables_names(cls) -> list:
+    def __get_parameter_tables_names(cls) -> List:
         """
         :return: The names of the table of the schema that are parameter tables
         """
         json_schema = cls(dict()).schema
-        return [
-            table_name
-            for table_name, content in json_schema['properties'].items()
-            if content['type'] == 'object'
-        ]
+        if json_schema.get('properties', None):
+            return [
+                table_name
+                for table_name, content in json_schema['properties'].items()
+                if content['type'] == 'object'
+            ]
+        return []
 
     def to_excel(self, path: str):
         """
