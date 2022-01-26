@@ -96,7 +96,6 @@ class TestSchemaManager(TestCase):
         )
         val = sm.validate_schema()
         self.assertFalse(val)
-        sm.jsonschema_to_flask()
 
     def test_check_wrong_schema_2(self):
         sm = SchemaManager.from_filepath(
@@ -104,7 +103,6 @@ class TestSchemaManager(TestCase):
         )
         val = sm.validate_schema()
         self.assertFalse(val)
-        sm.jsonschema_to_flask()
 
     def test_validation_errors(self):
         sm = SchemaManager.from_filepath(
