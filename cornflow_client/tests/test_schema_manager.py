@@ -82,6 +82,30 @@ class TestSchemaManager(TestCase):
         marshmallow_object().load(content)
         # marshmallow_object().fields['jobs'].nested().fields['successors']
 
+    def test_check_schema(self):
+        sm = SchemaManager.from_filepath(
+            self.get_project_data_file("vrp_solution_schema.json")
+        )
+        val = sm.validate_schema()
+        self.assertTrue(val)
+        sm.jsonschema_to_flask()
+
+    def test_check_wrong_schema_1(self):
+        sm = SchemaManager.from_filepath(
+            self.get_project_data_file("vrp_wrong_solution_schema_1.json")
+        )
+        val = sm.validate_schema()
+        self.assertFalse(val)
+        sm.jsonschema_to_flask()
+
+    def test_check_wrong_schema_2(self):
+        sm = SchemaManager.from_filepath(
+            self.get_project_data_file("vrp_wrong_solution_schema_2.json")
+        )
+        val = sm.validate_schema()
+        self.assertFalse(val)
+        sm.jsonschema_to_flask()
+
     def test_validation_errors(self):
         sm = SchemaManager.from_filepath(
             self.get_project_data_file("pulp_json_schema.json")
