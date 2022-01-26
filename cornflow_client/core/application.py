@@ -134,6 +134,16 @@ class ApplicationCore(ABC):
                     "The solution does not match the schema:\n{}".format(sol_errors)
                 )
 
+        if not inst.check_inconsistencies():
+            log = dict(
+                time=0,
+                solver=solver,
+                status="Infeasible",
+                status_code=STATUS_INFEASIBLE,
+                sol_code=SOLUTION_STATUS_INFEASIBLE,
+            )
+            return dict(), "", log
+
         algo = solver_class(inst, sol)
         start = timer()
         output = algo.solve(config)
