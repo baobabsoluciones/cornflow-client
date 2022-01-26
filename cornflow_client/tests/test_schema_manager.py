@@ -2,7 +2,7 @@ from cornflow_client import SchemaManager
 from cornflow_client.core.tools import load_json
 from cornflow_client.constants import DATASCHEMA
 from unittest import TestCase
-from .data.dict_schema_example import dict_example
+from data.dict_schema_example import dict_example
 
 import json
 import os
