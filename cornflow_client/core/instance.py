@@ -7,11 +7,10 @@ class InstanceCore(InstanceSolutionCore, ABC):
     The instance template.
     """
 
-    @abstractmethod
-    def check_inconsistencies(self, *args, **kwargs) -> bool:
+    def check_inconsistencies(self, *args, **kwargs) -> dict:
         """
-        Mandatory method that checks if the problem is feasible for the current instance
+        Method that checks if there are inconsistencies in the data of the current instance.
 
-        :return: True if the problem is feasible, False otherwise.
+        :return: A dictionary containing the inconsistencies found.
         """
-        raise NotImplementedError()
+        return dict()
