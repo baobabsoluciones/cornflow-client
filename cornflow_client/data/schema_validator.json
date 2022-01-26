@@ -71,7 +71,7 @@
                                     "type": {"$ref": "#/definitions/elementaryTypes" },
                                     "description": {"$ref": "#/definitions/titleOrDescriptionDict"},
                                     "title": {"$ref": "#/definitions/titleOrDescriptionDict"},
-                                    "isDate": {
+                                    "is_date": {
                                         "type": "boolean"
                                     },
                                     "sortable": {
@@ -120,7 +120,7 @@
                             "type": {"$ref": "#/definitions/elementaryTypes" },
                             "description": {"$ref": "#/definitions/titleOrDescriptionDict"},
                             "title": {"$ref": "#/definitions/titleOrDescriptionDict"},
-                            "isDate": {
+                            "is_date": {
                                 "type": "boolean"
                             }
                         },
