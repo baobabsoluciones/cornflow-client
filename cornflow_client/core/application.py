@@ -134,7 +134,7 @@ class ApplicationCore(ABC):
                     "The solution does not match the schema:\n{}".format(sol_errors)
                 )
 
-        if not inst.check_inconsistencies():
+        if inst.check():
             log = dict(
                 time=0,
                 solver=solver,
