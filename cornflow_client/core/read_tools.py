@@ -7,6 +7,7 @@ import pandas as pd
 
 # Partial imports
 from pytups import TupList, SuperDict
+import numbers
 
 
 def read_excel(path: str, param_tables_names: list = None) -> dict:
@@ -80,6 +81,8 @@ def format_value(value):
     if isinstance(value, bool):
         return value
 
+    if not isinstance(value, numbers.Number):
+        return str(value)
     if math.isnan(value):
         return None
     return value
