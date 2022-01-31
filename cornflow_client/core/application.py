@@ -1,11 +1,17 @@
-from typing import Type, Dict, List, Tuple, Union
-from timeit import default_timer as timer
-from jsonschema import Draft7Validator
+"""
 
+"""
+# Partial imports
+from abc import ABC, abstractmethod
+from jsonschema import Draft7Validator
+from timeit import default_timer as timer
+from typing import Type, Dict, List, Tuple, Union
+
+# Imports from internal modules
 from .instance import InstanceCore
 from .solution import SolutionCore
 from .experiment import ExperimentCore
-from abc import ABC, abstractmethod
+
 from cornflow_client.constants import (
     STATUS_OPTIMAL,
     STATUS_NOT_SOLVED,

@@ -1,9 +1,15 @@
-import pandas as pd
+"""
+
+"""
+# Full imports
 import math
+import pandas as pd
+
+# Partial imports
 from pytups import TupList, SuperDict
 
 
-def read_excel(path: str, param_tables_names: list=None) -> dict:
+def read_excel(path: str, param_tables_names: list = None) -> dict:
     """
     Read an entire excel file.
 
@@ -16,7 +22,7 @@ def read_excel(path: str, param_tables_names: list=None) -> dict:
     try:
         import openpyxl
     except (ModuleNotFoundError, ImportError) as e:
-        raise Exception("You must install openpyxl package to use this function")
+        raise Exception("You must install openpyxl package to use this method")
 
     data = pd.read_excel(path, sheet_name=None)
 

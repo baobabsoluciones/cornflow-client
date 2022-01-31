@@ -1,8 +1,9 @@
 """
 Constants values used in schemas functions.
 """
-from ortools.sat.python import cp_model
 import pulp as pl
+from ortools.sat.python import cp_model
+
 
 STRING_TYPE = "String"
 BOOLEAN_TYPE = "Boolean"
@@ -82,8 +83,9 @@ PULP_STATUS_MAPPING = {
     pl.LpStatusNotSolved: STATUS_NOT_SOLVED,
     pl.LpStatusOptimal: STATUS_OPTIMAL,
     pl.LpStatusUnbounded: STATUS_UNBOUNDED,
-    pl.LpStatusUndefined: STATUS_UNDEFINED
+    pl.LpStatusUndefined: STATUS_UNDEFINED,
 }
+
 
 class InvalidUsage(Exception):
     status_code = 400

@@ -1,10 +1,18 @@
-from abc import ABC, abstractmethod
+"""
+
+"""
+# Full imports
 import json
-from typing import List
-from pytups import SuperDict
-from jsonschema import Draft7Validator
-from genson import SchemaBuilder
 import pandas as pd
+
+# Partial imports
+from abc import ABC, abstractmethod
+from genson import SchemaBuilder
+from jsonschema import Draft7Validator
+from pytups import SuperDict
+from typing import List
+
+# Imports from internal modules
 from .read_tools import read_excel, is_xl_type
 
 
@@ -115,11 +123,11 @@ class InstanceSolutionCore(ABC):
         :return: The names of the table of the schema that are parameter tables
         """
         json_schema = cls(dict()).schema
-        if json_schema.get('properties', None):
+        if json_schema.get("properties", None):
             return [
                 table_name
-                for table_name, content in json_schema['properties'].items()
-                if content['type'] == 'object'
+                for table_name, content in json_schema["properties"].items()
+                if content["type"] == "object"
             ]
         return []
 
@@ -136,7 +144,9 @@ class InstanceSolutionCore(ABC):
             for table in self.data.keys():
                 content = self.data[table]
                 if isinstance(content, list):
-                    pd.DataFrame.from_records(content).to_excel(writer, table, index=False)
+                    pd.DataFrame.from_records(content).to_excel(
+                        writer, table, index=False
+                    )
                 elif isinstance(content, dict):
                     pd.DataFrame.from_dict(content, orient="index").to_excel(
                         writer, table, header=False

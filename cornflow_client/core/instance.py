@@ -1,5 +1,11 @@
-from .instance_solution import InstanceSolutionCore
+"""
+
+"""
+# Partial imports
 from abc import ABC
+
+# Imports from internal modules
+from .instance_solution import InstanceSolutionCore
 
 
 class InstanceCore(InstanceSolutionCore, ABC):
@@ -32,5 +38,5 @@ class InstanceCore(InstanceSolutionCore, ABC):
         inconsistencies = self.check_inconsistencies(*args, **kwargs)
         is_feasible = self.check_feasibility(*args, **kwargs)
         if not is_feasible:
-            inconsistencies['is_infeasible'] = True
+            inconsistencies["is_infeasible"] = True
         return inconsistencies

@@ -1,5 +1,11 @@
+"""
+
+"""
+# Full imports
 import json
 import os
+
+# Imports from internal modules
 from cornflow_client.core import InstanceSolutionCore
 from cornflow_client.core.read_tools import read_excel
 
@@ -40,9 +46,9 @@ def schema_from_excel(path_in, param_tables=None, path_out=None):
     if not param_tables:
         param_tables = []
     xl_data = read_excel(path_in, param_tables)
-    data = {k:str_columns(v) if isinstance(v, list) else v for k, v in xl_data.items()}
+    data = {k: str_columns(v) if isinstance(v, list) else v for k, v in xl_data.items()}
 
-    class InstSol(InstanceSolutionCore) :
+    class InstSol(InstanceSolutionCore):
         schema = {}
 
     instance = InstSol(data)
