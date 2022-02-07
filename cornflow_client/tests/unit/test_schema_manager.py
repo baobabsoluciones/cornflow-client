@@ -1,15 +1,22 @@
-from cornflow_client import SchemaManager
-from cornflow_client.constants import DATASCHEMA
-from unittest import TestCase
-from data.dict_schema_example import dict_example
+"""
 
+"""
+#
 import json
 import os
+
+#
+from unittest import TestCase
+
+#
+from cornflow_client import SchemaManager
+from cornflow_client.constants import DATASCHEMA
+from cornflow_client.tests.const import dict_example
 
 
 class TestSchemaManager(TestCase):
     def setUp(self):
-        self.root_data = os.path.join(os.path.dirname(__file__), "data")
+        self.root_data = os.path.join(os.path.dirname(__file__), "../data")
         pass
 
     def get_data_file(self, filename):
@@ -20,7 +27,7 @@ class TestSchemaManager(TestCase):
 
     def test_schema_dict(self):
         sm = SchemaManager.from_filepath(
-            self.get_project_data_file("../data/pulp_json_schema.json")
+            self.get_project_data_file("./pulp_json_schema.json")
         )
         dict_schema = sm.jsonschema_to_dict()
 
