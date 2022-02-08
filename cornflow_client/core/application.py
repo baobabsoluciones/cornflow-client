@@ -107,12 +107,12 @@ class ApplicationCore(ABC):
 
     def solve(
         self, data: dict, config: dict, solution_data: dict = None
-    ) -> Tuple[Dict, str, Dict]:
+    ) -> Tuple[Dict, Union[Dict, None], str, Dict]:
         """
         :param data: json for the problem
         :param config: execution configuration, including solver
         :param solution_data: optional json with an initial solution
-        :return: solution and log
+        :return: solution, checks and log
         """
         if config.get("msg", True):
             print("Solving the model")
@@ -152,7 +152,7 @@ class ApplicationCore(ABC):
                 status_code=STATUS_INFEASIBLE,
                 sol_code=SOLUTION_STATUS_INFEASIBLE,
             )
-            return dict(), "", log
+            return dict(), None, "", log
 
         algo = solver_class(inst, sol)
         start = timer()
