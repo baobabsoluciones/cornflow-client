@@ -187,7 +187,10 @@ class ApplicationCore(ABC):
 
         if log["sol_code"] > 0:
             sol = algo.solution.to_dict()
-        return sol, "", log
+
+        checks = algo.check_solution()
+
+        return sol, checks, "", log
 
     def get_solver(self, name: str = "default") -> Union[Type[ExperimentCore], None]:
         """

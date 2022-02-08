@@ -143,7 +143,7 @@ def cf_solve(fun, dag_name, secrets, **kwargs):
     data = execution_data["data"]
     config = execution_data["config"]
     try:
-        solution, log, log_json = fun(data, config)
+        solution, checks, log, log_json = fun(data, config)
     except NoSolverException as e:
         if config.get("msg", True):
             print("No solver found !")
@@ -168,6 +168,9 @@ def cf_solve(fun, dag_name, secrets, **kwargs):
     payload["data"] = solution
     if config.get("msg", True):
         print("A solution was found: we will first validate it")
+
+    if checks is not None:
+        payload["checks"] = checks
 
     try_to_write_solution(client, exec_id, payload)
 
