@@ -404,7 +404,7 @@ class CornFlow(object):
     def write_instance_checks(self, instance_id, encoding=None, **kwargs):
         """"""
         response = self.put_api_for_id(
-            "instance/", id=instance_id, encoding=encoding, payload=kwargs
+            "dag/instance/", id=instance_id, encoding=encoding, payload=kwargs
         )
         if response.status_code != 200:
             raise CornFlowApiError(
