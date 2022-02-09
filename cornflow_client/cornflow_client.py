@@ -136,7 +136,7 @@ class CornFlow(object):
         api_for_id with a PATCH request
         """
         return self.api_for_id(
-            api=api, id=id, json=payload, method="patch", encoding=encoding**kwargs
+            api=api, id=id, json=payload, method="patch", encoding=encoding, **kwargs
         )
 
     @ask_token

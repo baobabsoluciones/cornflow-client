@@ -2,7 +2,7 @@
 
 """
 # Partial imports
-from abc import ABC, abstractmethod
+from abc import ABC
 
 # Imports from internal modules
 from .instance_solution import InstanceSolutionCore
@@ -13,22 +13,25 @@ class InstanceCore(InstanceSolutionCore, ABC):
     The instance template.
     """
 
+    # TODO: make abstractmethod
     def check_inconsistencies(self, *args, **kwargs) -> dict:
         """
         Method that checks if there are inconsistencies in the data of the current instance.
 
         :return: A dictionary containing the inconsistencies found.
         """
-        pass
+        return dict()
 
+    # TODO: make abstractmethod
     def check_feasibility(self, *args, **kwargs) -> bool:
         """
         Method that checks if the problem is feasible.
 
         :return: True if the problem is feasible, False otherwise
         """
-        pass
+        return True
 
+    # TODO: make abstractmethod
     def check(self, *args, **kwargs) -> dict:
         """
         Method that checks if there are inconsistencies in the data of the instance and if the problem is feasible
