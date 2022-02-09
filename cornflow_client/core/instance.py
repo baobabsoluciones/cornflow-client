@@ -2,7 +2,7 @@
 
 """
 # Partial imports
-from abc import ABC
+from abc import ABC, abstractmethod
 
 # Imports from internal modules
 from .instance_solution import InstanceSolutionCore
@@ -19,7 +19,7 @@ class InstanceCore(InstanceSolutionCore, ABC):
 
         :return: A dictionary containing the inconsistencies found.
         """
-        return dict()
+        pass
 
     def check_feasibility(self, *args, **kwargs) -> bool:
         """
@@ -27,7 +27,7 @@ class InstanceCore(InstanceSolutionCore, ABC):
 
         :return: True if the problem is feasible, False otherwise
         """
-        return True
+        pass
 
     def check(self, *args, **kwargs) -> dict:
         """
