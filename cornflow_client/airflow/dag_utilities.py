@@ -109,8 +109,11 @@ def try_to_write_solution(client, exec_id, payload):
     If it fails tries to write again that it failed.
     If it fails at least once: it raises an exception
     """
+    execution_payload = dict(**payload)
+    execution_payload.pop("inst_id")
+    execution_payload.pop("inst_checks")
     try:
-        client.write_solution(execution_id=exec_id, **payload)
+        client.write_solution(execution_id=exec_id, **execution_payload)
     except CornFlowApiError:
         try_to_save_error(client, exec_id, -6)
         # attempt to update the execution with a failed status.
