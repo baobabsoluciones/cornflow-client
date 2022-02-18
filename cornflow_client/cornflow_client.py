@@ -88,7 +88,6 @@ class CornFlow(object):
         )
 
     def get_api(self, api, method="GET", encoding=None, **kwargs):
-        print(f"GET API with token: {self.token}")
         return requests.request(
             method=method,
             url=urljoin(self.url, api) + "/",
@@ -214,7 +213,6 @@ class CornFlow(object):
         if response.status_code == 200:
             result = response.json()
             self.token = result["token"]
-            print(f"CORNFLOW CLIENT correctly connected with {username}")
             return result
         else:
             raise CornFlowApiError(
