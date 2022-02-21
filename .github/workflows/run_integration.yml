@@ -80,7 +80,9 @@ jobs:
           flask register_dag_permissions -o 1 -v 1
           flask run -p 5050 &
           deactivate
-          sleep 15s
+          sleep 5s
+          cd ..
+          python -m unittest discover -s cornflow_client/tests/integration
         env:
           FLASK_ENV: testing
           FLASK_APP: cornflow.app
