@@ -1,4 +1,11 @@
+import os
 from cornflow_client.constants import DATASCHEMA
+
+path_to_tests_dir = os.path.dirname(os.path.abspath(__file__))
+
+
+def _get_file(relative_path):
+    return os.path.join(path_to_tests_dir, relative_path)
 
 
 dict_example = dict(
@@ -80,4 +87,4 @@ dict_example.update(
     }
 )
 
-PULP_EXAMPLE = "./data/pulp_example_data.json"
+PULP_EXAMPLE = _get_file("./data/pulp_example_data.json")
