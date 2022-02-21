@@ -82,7 +82,9 @@ jobs:
           flask create_base_user -u user -e user@cornflow.org -p UserPassword1! -v 1
           flask run -p 5050 &
           deactivate
-          sleep 5s
+          sleep 15s
+          cd ..
+          python -m unittest discover -s cornflow_client/tests/integration
         env:
           FLASK_ENV: testing
           FLASK_APP: cornflow.app
