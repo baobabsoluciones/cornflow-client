@@ -74,11 +74,11 @@ jobs:
           cd cornflow-server
           python -m venv cfvenv
           source cfvenv/bin/activate
-          python -m pip install - -r requirements.txt
+          python -m pip install -U -r requirements.txt
           flask db upgrade
           flask create_admin_user -u admin -e admin@cornflow.org -p Adminpassword1! -v 1
           flask create_service_user -u airflow -e airflow@cornflow.org -p Airflow_test_password1 -v 1
-          flask create_base_user -u user -e ucornflow.org -p UserPassword1! -v 1
+          flask create_base_user -u user -e user@cornflow.org -p UserPassword1! -v 1
           flask access_init -v 1
           flask run -p 5050
           deactivate
