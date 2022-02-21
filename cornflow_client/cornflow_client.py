@@ -185,7 +185,7 @@ class CornFlow(object):
         """
         Asks the server if it's alive
         """
-        response = requests.get((self.url, "health/"))
+        response = requests.get(urljoin(self.url, "health/"))
         if response.status_code == 200:
             return response.json()
         raise CornFlowApiError(
