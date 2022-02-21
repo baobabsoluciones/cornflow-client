@@ -37,15 +37,15 @@ jobs:
           path: ./cornflow-server/dags
       - name: Copy DAG files
         run: |
-          cp -r cornflow-server/dags/DAG/* cornflow-server/airflow-config/dags/
-          cp cornflow-server/dags/requirements.txt cornflow-server/airflow-config/
+          cp -r cornflow-server/dags/DAG/* cornflow-server/airflow_config/dags/
+          cp cornflow-server/dags/requirements.txt cornflow-server/airflow_config/
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -U -r requirements-dev.txt
       - name: Install airflow
         run: |
-          cd cornflow-server/airflow-config
+          cd cornflow-server/airflow_config
           python -m venv afvenv
           source afvenv/bin/activate
           AIRFLOW_VERSION=2.2.1
