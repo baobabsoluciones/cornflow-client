@@ -56,13 +56,7 @@ jobs:
           python -m pip install -U git+https://github.com/baobabsoluciones/cornflow-client@master
           python -m pip install -U -r requirements.txt
           airflow db init
-          airflow users create \
-                --username admin \
-                --firstname admin \
-                --lastname admin \
-                --role Admin \
-                --password admin \
-                --email admin@example.org
+          airflow users create -u admin -f admin -l admin -r Admin -p admin -e admin@example.org
           airflow webserver -p 8080 &
           airflow scheduler &
           deactivate
@@ -84,6 +78,7 @@ jobs:
           flask db upgrade
           flask create_admin_user -u admin -e admin@cornflow.org -p Adminpassword1! -v 1
           flask create_service_user -u airflow -e airflow@cornflow.org -p Airflow_test_password1 -v 1
+          flask create_base_user -u user -e ucornflow.org -p UserPassword1! -v 1
           flask access_init -v 1
           flask run -p 5050
           deactivate
