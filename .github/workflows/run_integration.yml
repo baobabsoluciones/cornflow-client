@@ -85,6 +85,7 @@ jobs:
           sleep 5s
         env:
           FLASK_ENV: testing
+          FLASK_APP: cornflow.app
       - name: Run itegration tests
         run: python -m unittest discover -s cornflow_client/tests/integration
 
