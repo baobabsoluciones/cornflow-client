@@ -88,6 +88,9 @@ jobs:
         env:
           FLASK_ENV: testing
           FLASK_APP: cornflow.app
+          AIRFLOW_URL: http://127.0.0.1:8080
+          AIRFLOW_USER: admin
+          AIRFLOW_PWD: admin
       - name: Run itegration tests
         run: python -m unittest discover -s cornflow_client/tests/integration
 

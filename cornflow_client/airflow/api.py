@@ -28,7 +28,6 @@ class Airflow(object):
             user=config["AIRFLOW_USER"],
             pwd=config["AIRFLOW_PWD"],
         )
-        print(data)
         return cls(**data)
 
     def is_alive(self):
