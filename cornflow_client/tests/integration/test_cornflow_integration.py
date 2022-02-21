@@ -4,7 +4,7 @@ from cornflow_client import CornFlow
 
 class TestCornflowClient(TestCase):
     def setUp(self):
-        self.client = CornFlow(url="http://localhost:5050")
+        self.client = CornFlow(url="http://127.0.0.1:5050")
 
     def tearDown(self):
         pass
