@@ -11,7 +11,7 @@ def _load_file(_file):
     return temp
 
 
-class TestCornflowClient(TestCase):
+class TestCornflowClientUser(TestCase):
     def setUp(self):
         self.client = CornFlow(url="http://127.0.0.1:5050/")
         login_result = self.client.login("user", "UserPassword1!")
@@ -89,4 +89,65 @@ class TestCornflowClient(TestCase):
         pass
 
     def test_get_all_executions(self):
+        pass
+
+    def test_get_one_user(self):
+        pass
+
+    def test_get_one_instance(self):
+        pass
+
+    def test_get_one_case(self):
+        pass
+
+    def test_delete_one_case(self):
+        pass
+
+    def test_put_one_case(self):
+        pass
+
+    def test_path_one_case(self):
+        pass
+
+    def test_delete_one_instance(self):
+        pass
+
+    def test_get_schema(self):
+        pass
+
+    def test_get_all_schemas(self):
+        pass
+
+
+class TestCornflowClientAdmin(TestCase):
+    def setUp(self):
+        self.client = CornFlow(url="http://127.0.0.1:5050/")
+        login_result = self.client.login("admin", "Adminpassword1!")
+        self.assertIn("id", login_result.keys())
+        self.assertIn("token", login_result.keys())
+
+    def tearDown(self):
+        pass
+
+    def test_get_all_users(self):
+        pass
+
+    def test_get_one_user(self):
+        pass
+
+
+class TestCornflowClientService(TestCase):
+    def setUp(self):
+        self.client = CornFlow(url="http://127.0.0.1:5050/")
+        login_result = self.client.login("airflow", "Airflow_test_password1")
+        self.assertIn("id", login_result.keys())
+        self.assertIn("token", login_result.keys())
+
+    def tearDown(self):
+        pass
+
+    def test_get_deployed_dags(self):
+        pass
+
+    def test_post_deployed_dag(self):
         pass
