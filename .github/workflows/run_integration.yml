@@ -81,8 +81,6 @@ jobs:
           flask run -p 5050 &
           deactivate
           sleep 5s
-          cd ..
-          python -m unittest discover -s cornflow_client/tests/integration
         env:
           FLASK_ENV: testing
           FLASK_APP: cornflow.app
@@ -91,6 +89,7 @@ jobs:
           AIRFLOW_PWD: admin
           SECRET_KEY: THISNEEDSTOBECHANGED
           OPEN_DEPLOYMENT: 1
+          AUTH_TYPE: 1
       - name: Run integration tests
         run: |
           python -m unittest discover -s cornflow_client/tests/integration
