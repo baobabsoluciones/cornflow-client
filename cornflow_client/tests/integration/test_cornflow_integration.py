@@ -1,7 +1,8 @@
-from unittest import TestCase
-from cornflow_client import CornFlow
 import json
-from ..const import PULP_EXAMPLE
+from unittest import TestCase
+
+from cornflow_client import CornFlow
+from cornflow_client.tests.const import PULP_EXAMPLE
 
 
 def _load_file(_file):
@@ -48,3 +49,44 @@ class TestCornflowClient(TestCase):
         ]
         for it in items:
             self.assertIn(it, response.keys())
+        return response
+
+    def test_create_case(self):
+        pass
+
+    def test_create_instance_file(self):
+        pass
+
+    def test_create_execution(self):
+        instance = self.test_create_instance()
+        return True
+
+    def test_create_full_case(self):
+        pass
+
+    def test_get_execution_data(self):
+        execution = self.test_create_execution()
+        pass
+
+    def test_stop_execution(self):
+        pass
+
+    def test_execution_results(self):
+        pass
+
+    def test_execution_status(self):
+        pass
+
+    def test_get_execution_log(self):
+        pass
+
+    def test_get_execution_solution(self):
+        pass
+
+    def test_get_all_instances(self):
+        instance1 = self.test_create_instance()
+        instance2 = self.test_create_instance()
+        pass
+
+    def test_get_all_executions(self):
+        pass
