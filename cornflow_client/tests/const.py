@@ -79,3 +79,5 @@ dict_example.update(
         ]
     }
 )
+
+PULP_EXAMPLE = "./data/pulp_example_data.json"
