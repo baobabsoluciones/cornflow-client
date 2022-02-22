@@ -416,11 +416,12 @@ class TestCornflowClientUser(TestCase):
         schema["config"]["properties"]["solver"]["enum"] = pl.listSolvers()
         schema["config"]["properties"]["solver"]["default"] = "PULP_CBC_CMD"
 
-        self.assertDictEqual(schema, response)
+        for (key, value) in schema.items():
+            self.assertDictEqual(value, response[key])
 
     def test_get_all_schemas(self):
         response = self.client.get_all_schemas()
-        read_schemas = [v.values() for v in response]
+        read_schemas = [dag for v in response for (_, dag) in v.items()]
 
         for schema in PUBLIC_DAGS:
             self.assertIn(schema, read_schemas)
