@@ -286,7 +286,16 @@ class TestCornflowClientUser(TestCase):
         self.assertGreaterEqual(len(instances), 2)
 
     def test_get_all_executions(self):
-        pass
+        self.test_create_execution()
+        self.test_create_execution()
+        executions = self.client.get_all_executions()
+        self.assertGreaterEqual(len(executions), 2)
+
+    def test_get_all_cases(self):
+        self.test_create_case()
+        self.test_create_case()
+        cases = self.client.get_all_cases()
+        self.assertGreaterEqual(len(cases), 2)
 
     def test_get_one_user(self):
         pass
