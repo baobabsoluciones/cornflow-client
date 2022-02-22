@@ -5,7 +5,7 @@ from unittest import TestCase
 
 from cornflow_client import CornFlow
 from cornflow_client.constants import STATUS_OPTIMAL, STATUS_NOT_SOLVED
-from cornflow_client.tests.const import PULP_EXAMPLE
+from cornflow_client.tests.const import PUBLIC_DAGS, PULP_EXAMPLE
 
 path_to_tests_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -378,19 +378,31 @@ class TestCornflowClientUser(TestCase):
         self.assertEqual("The object has been deleted", response["message"])
 
     def test_put_one_case(self):
-        pass
+        case = self.test_create_case()
+        response = self.client.put_one_case(case["id"], {"name": "new_case_name"})
+        self.assertEqual("Updated correctly", response["message"])
 
-    def test_path_one_case(self):
+    def test_patch_one_case(self):
+        # TODO: Get example of data patch for the tests
         pass
 
     def test_delete_one_instance(self):
-        pass
+        instance = self.test_create_instance()
+        response = self.client.delete_one_instance(instance["instance"])
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("The object has been deleted", response.json()["message"])
 
     def test_get_schema(self):
-        pass
+        response = self.client.get_schema("solve_model_dag")
+        schema = _load_file(_get_file("../../data/pulp_json_schema.json"))
+        self.assertDictEqual(schema, response)
 
     def test_get_all_schemas(self):
-        pass
+        response = self.client.get_all_schemas()
+        read_schemas = [v for v in response.values()]
+        schemas = PUBLIC_DAGS
+        for schema in schemas:
+            self.assertIn(schema, read_schemas)
 
 
 class TestCornflowClientAdmin(TestCase):

@@ -88,3 +88,18 @@ dict_example.update(
 )
 
 PULP_EXAMPLE = _get_file("./data/pulp_example_data.json")
+
+PUBLIC_DAGS = [
+    "solve_model_dag",
+    "gc",
+    "timer",
+    "bar_cutting",
+    "facility_location",
+    "graph_coloring",
+    "hk_2020_dag",
+    "knapsack",
+    "roadef",
+    "rostering",
+    "tsp",
+    "vrp",
+]
