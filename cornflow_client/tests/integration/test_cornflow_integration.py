@@ -94,6 +94,7 @@ class TestCornflowClientUser(TestCase):
         self.assertEqual("test_case", response["name"])
         self.assertEqual("solve_model_dag", response["schema"])
         self.assertEqual("test_description", response["description"])
+        return response
 
     def test_create_instance_file(self):
         response = self.client.create_instance_file(
@@ -279,6 +280,7 @@ class TestCornflowClientUser(TestCase):
         self.assertEqual("case_from_solution", response["name"])
         self.assertEqual("solve_model_dag", response["schema"])
         self.assertEqual("case_from_solution_description", response["description"])
+        return response
 
     def test_get_all_instances(self):
         self.test_create_instance()
@@ -307,7 +309,7 @@ class TestCornflowClientUser(TestCase):
             self.assertIn(item, response.json().keys())
 
         self.assertEqual(self.user_id, response.json()["id"])
-        self.assertEqual("user", response.json()["name"])
+        self.assertEqual("user", response.json()["username"])
         self.assertEqual("user@cornflow.org", response.json()["email"])
 
     def test_get_one_instance(self):
@@ -329,7 +331,46 @@ class TestCornflowClientUser(TestCase):
             self.assertEqual(instance[item], response[item])
 
     def test_get_one_case(self):
-        pass
+        case = self.test_create_case()
+        response = self.client.get_one_case(case["id"])
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "solution_hash",
+            "path",
+            "updated_at",
+            "is_dir",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+            self.assertEqual(case[item], response[item])
+
+    def test_get_one_case_execution(self):
+        case = self.test_create_case_execution()
+        response = self.client.get_one_case(case["id"])
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "solution_hash",
+            "path",
+            "updated_at",
+            "is_dir",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+            self.assertEqual(case[item], response[item])
 
     def test_delete_one_case(self):
         pass

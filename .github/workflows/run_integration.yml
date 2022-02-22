@@ -94,5 +94,3 @@ jobs:
         run: |
           coverage run --source=./cornflow-client/ -m unittest discover -s=./cornflow_client/tests/integration/
           ls -ltr
-          coverage combine
-          coverage report -m
