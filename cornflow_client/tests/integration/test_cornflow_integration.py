@@ -416,11 +416,8 @@ class TestCornflowClientUser(TestCase):
         schema["config"]["properties"]["solver"]["enum"] = pl.listSolvers()
         schema["config"]["properties"]["solver"]["default"] = "PULP_CBC_CMD"
 
-        print(f"Cornflow response keys: {response.keys()}")
-        print(f"Cornflow response: {response}")
-
-        self.assertEqual(schema["instance"], response["instance"])
-        self.assertEqual(schema["solution"], response["solution"])
+        for (key, value) in schema.items():
+            self.assertDictEqual(value, response[key])
 
     def test_get_all_schemas(self):
         response = self.client.get_all_schemas()
@@ -489,7 +486,7 @@ class TestCornflowClientService(TestCase):
 
         self.assertEqual(instance["id"], response["id"])
         self.assertEqual(data, response["data"])
-        self.assertEqual(execution.config, response["config"])
+        self.assertEqual(execution["config"], response["config"])
 
     def test_write_execution_solution(self):
         client = CornFlow(url="http://127.0.0.1:5050/")
