@@ -501,7 +501,7 @@ class TestCornflowClientService(TestCase):
             schema="solve_model_dag",
         )
 
-        time.sleep(10)
+        time.sleep(15)
 
         solution = client.get_solution(execution["id"])
 
