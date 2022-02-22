@@ -1,8 +1,10 @@
 import json
 import os
+import time
 from unittest import TestCase
 
 from cornflow_client import CornFlow
+from cornflow_client.constants import STATUS_OPTIMAL, STATUS_NOT_SOLVED
 from cornflow_client.tests.const import PULP_EXAMPLE
 
 path_to_tests_dir = os.path.dirname(os.path.abspath(__file__))
@@ -83,7 +85,6 @@ class TestCornflowClientUser(TestCase):
             "solution_hash",
             "path",
             "updated_at",
-            "dependents",
             "is_dir",
         ]
         print(f"Create case response has keys: {response.keys()}")
@@ -142,36 +143,55 @@ class TestCornflowClientUser(TestCase):
             "message",
         ]
 
-        print(
-            f"Execution has state {response['state']} and message {response['message']}"
-        )
         for item in items:
             self.assertIn(item, response.keys())
 
-        self.assertEqual(instance["instance_id"], response["instance_id"])
+        self.assertEqual(instance["id"], response["instance_id"])
         self.assertEqual("test_execution", response["name"])
         self.assertEqual("execution_description", response["description"])
         self.assertEqual(
             {"solver": "PULP_CBC_CMD", "timeLimit": 60}, response["config"]
         )
-        # self.assertEqual(, response["state"])
-        # self.assertEqual(instance["instance_id"], response["message"])
+        self.assertEqual(STATUS_NOT_SOLVED, response["state"])
 
-    def test_create_full_case(self):
+        return response
+
+    def test_execution_results(self):
+        execution = self.test_create_execution()
+        time.sleep(15)
+        response = self.client.get_results(execution["id"])
+
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "config",
+            "instance_id",
+            "state",
+            "message",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+
+        self.assertEqual(execution["id"], response["id"])
+        self.assertEqual(STATUS_OPTIMAL, response["state"])
+
+    def test_execution_status(self):
         pass
 
-    def test_get_execution_data(self):
+    def test_create_case_execution(self):
         execution = self.test_create_execution()
         pass
 
     def test_stop_execution(self):
-        pass
-
-    def test_execution_results(self):
-        pass
-
-    def test_execution_status(self):
-        pass
+        execution = self.test_create_execution()
+        response = self.client.stop_execution(execution["id"])
+        self.assertEqual(response["message"], "The execution has been stopped")
 
     def test_get_execution_log(self):
         pass
@@ -240,6 +260,12 @@ class TestCornflowClientService(TestCase):
         self.assertIn("token", login_result.keys())
 
     def tearDown(self):
+        pass
+
+    def test_get_execution_data(self):
+        pass
+
+    def test_write_execution_solution(self):
         pass
 
     def test_get_deployed_dags(self):
