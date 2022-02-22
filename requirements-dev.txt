@@ -2,4 +2,3 @@
 coverage
 pandas
 openpyxl
-xldr>=1.0.0
