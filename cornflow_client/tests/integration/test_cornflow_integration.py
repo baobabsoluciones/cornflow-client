@@ -54,8 +54,8 @@ class TestCornflowClientUser(TestCase):
             "schema",
             "executions",
         ]
-        for it in items:
-            self.assertIn(it, response.keys())
+        for item in items:
+            self.assertIn(item, response.keys())
 
         self.assertEqual("test_example", response["name"])
         self.assertEqual("solve_model_dag", response["schema"])
@@ -86,16 +86,17 @@ class TestCornflowClientUser(TestCase):
             "dependents",
             "is_dir",
         ]
+        print(f"Create case response has keys: {response.keys()}")
 
-        for it in items:
-            self.assertIn(it, response.keys())
+        for item in items:
+            self.assertIn(item, response.keys())
         self.assertEqual("test_case", response["name"])
         self.assertEqual("solve_model_dag", response["schema"])
         self.assertEqual("test_description", response["description"])
 
     def test_create_instance_file(self):
         response = self.client.create_instance_file(
-            _get_file("./data/test_mps.mps"),
+            _get_file("../data/test_mps.mps"),
             name="test_filename",
             description="filename_description",
         )
@@ -111,8 +112,8 @@ class TestCornflowClientUser(TestCase):
             "executions",
         ]
 
-        for it in items:
-            self.assertIn(it, response.keys())
+        for item in items:
+            self.assertIn(item, response.keys())
 
         self.assertEqual("test_filename", response["name"])
         self.assertEqual("solve_model_dag", response["schema"])
@@ -120,7 +121,41 @@ class TestCornflowClientUser(TestCase):
 
     def test_create_execution(self):
         instance = self.test_create_instance()
-        return True
+        response = self.client.create_execution(
+            instance_id=instance["id"],
+            config={"solver": "PULP_CBC_CMD", "timeLimit": 60},
+            name="test_execution",
+            description="execution_description",
+            schema="solve_model_dag",
+        )
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "config",
+            "instance_id",
+            "state",
+            "message",
+        ]
+
+        print(
+            f"Execution has state {response['state']} and message {response['message']}"
+        )
+        for item in items:
+            self.assertIn(item, response.keys())
+
+        self.assertEqual(instance["instance_id"], response["instance_id"])
+        self.assertEqual("test_execution", response["name"])
+        self.assertEqual("execution_description", response["description"])
+        self.assertEqual(
+            {"solver": "PULP_CBC_CMD", "timeLimit": 60}, response["config"]
+        )
+        # self.assertEqual(, response["state"])
+        # self.assertEqual(instance["instance_id"], response["message"])
 
     def test_create_full_case(self):
         pass
