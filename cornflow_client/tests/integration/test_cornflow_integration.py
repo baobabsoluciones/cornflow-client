@@ -1,17 +1,27 @@
+"""
+Integration test for the Cornflow client
+Base, admin and service user get tested
+Integration between Airflow and cornflow through airflow client and cornflow client tested as well
+"""
+# Full imports
 import json
 import os
-import time
 import pulp as pl
+import time
+
+# Partial imports
 from unittest import TestCase
 
+# Internal imports
 from cornflow_client import CornFlow
 from cornflow_client.constants import STATUS_OPTIMAL, STATUS_NOT_SOLVED
 from cornflow_client.schema.tools import get_pulp_jsonschema
 from cornflow_client.tests.const import PUBLIC_DAGS, PULP_EXAMPLE
 
+# Constants
 path_to_tests_dir = os.path.dirname(os.path.abspath(__file__))
 
-
+# Helper functions
 def _load_file(_file):
     with open(_file) as f:
         temp = json.load(f)
@@ -22,6 +32,7 @@ def _get_file(relative_path):
     return os.path.join(path_to_tests_dir, relative_path)
 
 
+# Testing suit classes
 class TestCornflowClientUser(TestCase):
     def setUp(self):
         self.client = CornFlow(url="http://127.0.0.1:5050/")
@@ -409,7 +420,7 @@ class TestCornflowClientUser(TestCase):
 
     def test_get_all_schemas(self):
         response = self.client.get_all_schemas()
-        read_schemas = [v.value() for v in response]
+        read_schemas = [v.values() for v in response]
 
         for schema in PUBLIC_DAGS:
             self.assertIn(schema, read_schemas)
@@ -472,7 +483,7 @@ class TestCornflowClientService(TestCase):
         for item in items:
             self.assertIn(item, response.keys())
 
-        self.assertEqual(instance.id, response["id"])
+        self.assertEqual(instance["id"], response["id"])
         self.assertEqual(data, response["data"])
         self.assertEqual(execution.config, response["config"])
 

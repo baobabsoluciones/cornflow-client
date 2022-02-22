@@ -91,7 +91,7 @@ PULP_EXAMPLE = _get_file("./data/pulp_example_data.json")
 
 PUBLIC_DAGS = [
     "solve_model_dag",
-    "gc",
+    "graph_coloring",
     "timer",
     "bar_cutting",
     "facility_location",
