@@ -26,6 +26,7 @@ class TestCornflowClientUser(TestCase):
         login_result = self.client.login("user", "UserPassword1!")
         self.assertIn("id", login_result.keys())
         self.assertIn("token", login_result.keys())
+        self.user_id = login_result["id"]
 
     def tearDown(self):
         pass
@@ -298,10 +299,34 @@ class TestCornflowClientUser(TestCase):
         self.assertGreaterEqual(len(cases), 2)
 
     def test_get_one_user(self):
-        pass
+        response = self.client.get_one_user(self.user_id)
+        self.assertEqual(response.status_code, 200)
+
+        items = ["id", "first_name", "last_name", "username", "email"]
+        for item in items:
+            self.assertIn(item, response.json().keys())
+
+        self.assertEqual(self.user_id, response.json()["id"])
+        self.assertEqual("user", response.json()["name"])
+        self.assertEqual("user@cornflow.org", response.json()["email"])
 
     def test_get_one_instance(self):
-        pass
+        instance = self.test_create_instance()
+        response = self.client.get_one_instance(instance["id"])
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "executions",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+            self.assertEqual(instance[item], response[item])
 
     def test_get_one_case(self):
         pass
