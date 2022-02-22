@@ -87,7 +87,6 @@ class TestCornflowClientUser(TestCase):
             "updated_at",
             "is_dir",
         ]
-        print(f"Create case response has keys: {response.keys()}")
 
         for item in items:
             self.assertIn(item, response.keys())
@@ -182,11 +181,17 @@ class TestCornflowClientUser(TestCase):
         self.assertEqual(STATUS_OPTIMAL, response["state"])
 
     def test_execution_status(self):
-        pass
-
-    def test_create_case_execution(self):
         execution = self.test_create_execution()
-        pass
+        response = self.client.get_status(execution["id"])
+        items = ["id", "state", "message", "data_hash"]
+        for item in items:
+            self.assertIn(item, response.keys())
+        self.assertEqual(STATUS_NOT_SOLVED, response["state"])
+        time.sleep(15)
+        response = self.client.get_status(execution["id"])
+        for item in items:
+            self.assertIn(item, response.keys())
+        self.assertEqual(STATUS_OPTIMAL, response["state"])
 
     def test_stop_execution(self):
         execution = self.test_create_execution()
@@ -194,15 +199,91 @@ class TestCornflowClientUser(TestCase):
         self.assertEqual(response["message"], "The execution has been stopped")
 
     def test_get_execution_log(self):
-        pass
+        execution = self.test_create_execution()
+        response = self.client.get_log(execution["id"])
+
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "config",
+            "instance_id",
+            "state",
+            "message",
+            "log",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+        self.assertEqual(execution["id"], response["id"])
 
     def test_get_execution_solution(self):
-        pass
+        execution = self.test_create_execution()
+        time.sleep(15)
+        response = self.client.get_solution(execution["id"])
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "config",
+            "instance_id",
+            "state",
+            "message",
+            "data",
+            "checks",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+
+        self.assertEqual(execution["id"], response["id"])
+        self.assertEqual(STATUS_OPTIMAL, response["state"])
+
+        return response
+
+    def test_create_case_execution(self):
+        execution = self.test_get_execution_solution()
+        response = self.client.create_case(
+            name="case_from_solution",
+            schema="solve_model_dag",
+            description="case_from_solution_description",
+            solution=execution["data"],
+        )
+
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "solution_hash",
+            "path",
+            "updated_at",
+            "is_dir",
+        ]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+
+        self.assertEqual("case_from_solution", response["name"])
+        self.assertEqual("solve_model_dag", response["schema"])
+        self.assertEqual("case_from_solution_description", response["description"])
 
     def test_get_all_instances(self):
-        instance1 = self.test_create_instance()
-        instance2 = self.test_create_instance()
-        pass
+        self.test_create_instance()
+        self.test_create_instance()
+        instances = self.client.get_all_instances()
+        self.assertGreaterEqual(len(instances), 2)
 
     def test_get_all_executions(self):
         pass
