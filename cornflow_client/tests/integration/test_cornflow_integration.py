@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import pulp as pl
 from unittest import TestCase
 
 from cornflow_client import CornFlow
@@ -400,15 +401,17 @@ class TestCornflowClientUser(TestCase):
             "instance": get_pulp_jsonschema(),
             "solution": get_pulp_jsonschema(),
         }
-        print(f"Schema from cornflow: {response}")
-        print(f"Generated schema: {schema}")
+
+        schema["config"]["properties"]["solver"]["enum"] = pl.listSolvers()
+        schema["config"]["properties"]["solver"]["default"] = "PULP_CBC_CMD"
+
         self.assertDictEqual(schema, response)
 
     def test_get_all_schemas(self):
         response = self.client.get_all_schemas()
         read_schemas = [v.value() for v in response]
-        schemas = PUBLIC_DAGS
-        for schema in schemas:
+
+        for schema in PUBLIC_DAGS:
             self.assertIn(schema, read_schemas)
 
 
@@ -418,15 +421,27 @@ class TestCornflowClientAdmin(TestCase):
         login_result = self.client.login("admin", "Adminpassword1!")
         self.assertIn("id", login_result.keys())
         self.assertIn("token", login_result.keys())
+        self.base_user_id = CornFlow(url="http://127.0.0.1:5050/").login(
+            "user", "UserPassword1!"
+        )["id"]
 
     def tearDown(self):
         pass
 
     def test_get_all_users(self):
-        pass
+        response = self.client.get_all_users()
+        self.assertGreaterEqual(len(response), 3)
 
     def test_get_one_user(self):
-        pass
+        response = self.client.get_one_user(self.base_user_id)
+
+        items = ["id", "first_name", "last_name", "username", "email"]
+        for item in items:
+            self.assertIn(item, response.json().keys())
+
+        self.assertEqual(self.base_user_id, response.json()["id"])
+        self.assertEqual("user", response.json()["username"])
+        self.assertEqual("user@cornflow.org", response.json()["email"])
 
 
 class TestCornflowClientService(TestCase):
@@ -440,13 +455,73 @@ class TestCornflowClientService(TestCase):
         pass
 
     def test_get_execution_data(self):
-        pass
+        client = CornFlow(url="http://127.0.0.1:5050/")
+        _ = client.login("user", "UserPassword1!")
+        data = _load_file(PULP_EXAMPLE)
+        instance = client.create_instance(data, "test_example", "test_description")
+        execution = client.create_execution(
+            instance_id=instance["id"],
+            config={"solver": "PULP_CBC_CMD", "timeLimit": 60},
+            name="test_execution",
+            description="execution_description",
+            schema="solve_model_dag",
+        )
+        response = self.client.get_data(execution["id"])
+        items = ["id", "data", "config"]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+
+        self.assertEqual(instance.id, response["id"])
+        self.assertEqual(data, response["data"])
+        self.assertEqual(execution.config, response["config"])
 
     def test_write_execution_solution(self):
-        pass
+        client = CornFlow(url="http://127.0.0.1:5050/")
+        _ = client.login("user", "UserPassword1!")
+        data = _load_file(PULP_EXAMPLE)
+        instance = client.create_instance(data, "test_example", "test_description")
+        execution = client.create_execution(
+            instance_id=instance["id"],
+            config={"solver": "PULP_CBC_CMD", "timeLimit": 60},
+            name="test_execution",
+            description="execution_description",
+            schema="solve_model_dag",
+        )
+
+        time.sleep(15)
+
+        solution = client.get_solution(execution["id"])
+
+        payload = dict(
+            state=1, log_json={}, log_text="", solution_schema="solve_model_dag"
+        )
+        payload["data"] = solution["data"]
+
+        response = self.client.write_solution(execution["id"], **payload)
+        self.assertEqual("results successfully saved", response["message"])
 
     def test_get_deployed_dags(self):
-        pass
+        response = self.client.get_deployed_dags()
+
+        items = ["id", "description"]
+        for item in items:
+            self.assertIn(item, response[0].keys())
+
+        deployed_dags = [v["id"] for v in response]
+
+        for dag in PUBLIC_DAGS:
+            self.assertIn(dag, deployed_dags)
 
     def test_post_deployed_dag(self):
-        pass
+
+        response = self.client.create_deployed_dag(
+            name="test_dag", description="test_dag_description"
+        )
+
+        items = ["id", "description"]
+
+        for item in items:
+            self.assertIn(item, response.keys())
+        self.assertEqual("test_dag", response["id"])
+        self.assertEqual("test_dag_description", response["description"])
