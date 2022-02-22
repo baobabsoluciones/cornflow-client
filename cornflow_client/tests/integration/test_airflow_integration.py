@@ -21,5 +21,5 @@ class TestAirflowClient(TestCase):
         self.assertTrue(client.is_alive())
 
     def test_bad_connection(self):
-        client = Airflow(url="http://127.0.0.1:8080", user="admin", pwd="admin!")
+        client = Airflow(url="http://127.0.0.1:8088", user="admin", pwd="admin!")
         self.assertFalse(client.is_alive())
