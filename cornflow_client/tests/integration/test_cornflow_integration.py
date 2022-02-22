@@ -172,7 +172,7 @@ class TestCornflowClientUser(TestCase):
 
     def test_execution_results(self):
         execution = self.test_create_execution()
-        time.sleep(15)
+        time.sleep(10)
         response = self.client.get_results(execution["id"])
 
         items = [
@@ -202,7 +202,7 @@ class TestCornflowClientUser(TestCase):
         for item in items:
             self.assertIn(item, response.keys())
         self.assertEqual(STATUS_NOT_SOLVED, response["state"])
-        time.sleep(15)
+        time.sleep(10)
         response = self.client.get_status(execution["id"])
         for item in items:
             self.assertIn(item, response.keys())
@@ -238,7 +238,7 @@ class TestCornflowClientUser(TestCase):
 
     def test_get_execution_solution(self):
         execution = self.test_create_execution()
-        time.sleep(15)
+        time.sleep(10)
         response = self.client.get_solution(execution["id"])
         items = [
             "id",
@@ -501,7 +501,7 @@ class TestCornflowClientService(TestCase):
             schema="solve_model_dag",
         )
 
-        time.sleep(15)
+        time.sleep(10)
 
         solution = client.get_solution(execution["id"])
 
