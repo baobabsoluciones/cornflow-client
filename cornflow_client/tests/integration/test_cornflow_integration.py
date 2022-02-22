@@ -400,13 +400,16 @@ class TestCornflowClientUser(TestCase):
             "instance": get_pulp_jsonschema(),
             "solution": get_pulp_jsonschema(),
         }
+        print(f"Schema from cornflow: {response}")
+        print(f"Generated schema: {schema}")
         self.assertDictEqual(schema, response)
 
     def test_get_all_schemas(self):
         response = self.client.get_all_schemas()
+        read_schemas = [v.value() for v in response]
         schemas = PUBLIC_DAGS
         for schema in schemas:
-            self.assertIn(schema, response)
+            self.assertIn(schema, read_schemas)
 
 
 class TestCornflowClientAdmin(TestCase):
