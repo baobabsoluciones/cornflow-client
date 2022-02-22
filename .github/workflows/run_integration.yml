@@ -92,5 +92,5 @@ jobs:
           AUTH_TYPE: 1
       - name: Run integration tests
         run: |
-          coverage run --source=./cornflow-client/ -m unittest discover -s=./cornflow_client/tests/integration
+          coverage run --source=./cornflow-client/ -m unittest discover -s=./cornflow_client/tests/integration/
           coverage report -m

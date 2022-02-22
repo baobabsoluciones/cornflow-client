@@ -286,8 +286,8 @@ class TestCornflowClientUser(TestCase):
         self.assertGreaterEqual(len(instances), 2)
 
     def test_get_all_executions(self):
-        self.test_create_execution()
-        self.test_create_execution()
+        self.test_stop_execution()
+        self.test_stop_execution()
         executions = self.client.get_all_executions()
         self.assertGreaterEqual(len(executions), 2)
 
