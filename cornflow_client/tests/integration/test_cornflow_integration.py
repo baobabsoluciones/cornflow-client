@@ -373,7 +373,9 @@ class TestCornflowClientUser(TestCase):
             self.assertEqual(case[item], response[item])
 
     def test_delete_one_case(self):
-        pass
+        case = self.test_create_case()
+        response = self.client.delete_one_case(case["id"])
+        self.assertEqual("The object has been deleted", response["message"])
 
     def test_put_one_case(self):
         pass
