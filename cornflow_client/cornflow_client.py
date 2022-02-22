@@ -84,7 +84,7 @@ class CornFlow(object):
                 "Authorization": "access_token " + self.token,
                 "Content-Encoding": encoding,
             },
-            **kwargs
+            **kwargs,
         )
 
     def get_api(self, api, method="GET", encoding=None, **kwargs):
@@ -95,7 +95,7 @@ class CornFlow(object):
                 "Authorization": "access_token " + self.token,
                 "Content-Encoding": encoding,
             },
-            **kwargs
+            **kwargs,
         )
 
     @ask_token
@@ -158,7 +158,7 @@ class CornFlow(object):
                 "Authorization": "access_token " + self.token,
                 "Content-Encoding": encoding,
             },
-            **kwargs
+            **kwargs,
         )
 
     @log_call
@@ -396,6 +396,19 @@ class CornFlow(object):
                 "Expected a code 200, got a {} error instead: {}".format(
                     response.status_code, response.text
                 )
+            )
+        return response.json()
+
+    @ask_token
+    @prepare_encoding
+    def write_instance_checks(self, instance_id, encoding=None, **kwargs):
+        """"""
+        response = self.put_api_for_id(
+            "dag/instance/", id=instance_id, encoding=encoding, payload=kwargs
+        )
+        if response.status_code != 200:
+            raise CornFlowApiError(
+                f"Expected a 200, got a {response.status_code} error instead: {response.text}"
             )
         return response.json()
 
@@ -684,7 +697,7 @@ class CornFlow(object):
 
         :param str encoding: the type of encoding used in the call. Defaults to 'br'
         """
-        return self.get_api("dag/deployed/", encoding=encoding).json()
+        return self.get_api("dag/deployed", encoding=encoding).json()
 
     @log_call
     @ask_token
