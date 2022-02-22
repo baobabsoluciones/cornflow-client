@@ -93,4 +93,5 @@ jobs:
       - name: Run integration tests
         run: |
           coverage run --source=./cornflow_client/ -m unittest discover -s cornflow_client/tests/integration
+          coverage run -a --source=./cornflow_client/ -m unittest discover -s cornflow_client/tests/unit
           coverage report -m
