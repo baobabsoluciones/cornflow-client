@@ -1,14 +1,21 @@
 import json
+import os
 from unittest import TestCase
 
 from cornflow_client import CornFlow
 from cornflow_client.tests.const import PULP_EXAMPLE
+
+path_to_tests_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 def _load_file(_file):
     with open(_file) as f:
         temp = json.load(f)
     return temp
+
+
+def _get_file(relative_path):
+    return os.path.join(path_to_tests_dir, relative_path)
 
 
 class TestCornflowClientUser(TestCase):
@@ -49,13 +56,67 @@ class TestCornflowClientUser(TestCase):
         ]
         for it in items:
             self.assertIn(it, response.keys())
+
+        self.assertEqual("test_example", response["name"])
+        self.assertEqual("solve_model_dag", response["schema"])
+        self.assertEqual("test_description", response["description"])
+
         return response
 
     def test_create_case(self):
-        pass
+        data = _load_file(PULP_EXAMPLE)
+        response = self.client.create_case(
+            name="test_case",
+            schema="solve_model_dag",
+            data=data,
+            description="test_description",
+        )
+
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "solution_hash",
+            "path",
+            "updated_at",
+            "dependents",
+            "is_dir",
+        ]
+
+        for it in items:
+            self.assertIn(it, response.keys())
+        self.assertEqual("test_case", response["name"])
+        self.assertEqual("solve_model_dag", response["schema"])
+        self.assertEqual("test_description", response["description"])
 
     def test_create_instance_file(self):
-        pass
+        response = self.client.create_instance_file(
+            _get_file("./data/test_mps.mps"),
+            name="test_filename",
+            description="filename_description",
+        )
+
+        items = [
+            "id",
+            "name",
+            "description",
+            "created_at",
+            "user_id",
+            "data_hash",
+            "schema",
+            "executions",
+        ]
+
+        for it in items:
+            self.assertIn(it, response.keys())
+
+        self.assertEqual("test_filename", response["name"])
+        self.assertEqual("solve_model_dag", response["schema"])
+        self.assertEqual("filename_description", response["description"])
 
     def test_create_execution(self):
         instance = self.test_create_instance()
