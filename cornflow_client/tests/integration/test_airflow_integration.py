@@ -78,11 +78,11 @@ class TestAirflowClient(TestCase):
         self.assertIn("dag_run_id", response.json().keys())
 
         # Check that is running
-        time.sleep(3)
+        time.sleep(5)
         status = cf_client.get_status(execution_id=execution["id"])
         self.assertEqual(0, status["state"])
 
         # Check that is optimal
-        time.sleep(7)
+        time.sleep(10)
         status = cf_client.get_status(execution_id=execution["id"])
         self.assertEqual(1, status["state"])
