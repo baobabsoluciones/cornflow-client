@@ -67,14 +67,22 @@ class TestAirflowClient(TestCase):
             schema="solve_model_dag",
             run=False,
         )
+
+        # Check that execution is not run
+        status = cf_client.get_status(execution_id=execution["id"])
+        self.assertEqual(-4, status["state"])
+
+        # Run the execution
         response = self.client.run_dag(execution_id=execution["id"])
         self.assertEqual(200, response.status_code)
         self.assertIn("dag_run_id", response.json().keys())
-        status = cf_client.get_status(execution_id=execution["id"])
-        self.assertEqual(-4, status["state"])
-        time.sleep(5)
+
+        # Check that is running
+        time.sleep(3)
         status = cf_client.get_status(execution_id=execution["id"])
         self.assertEqual(0, status["state"])
-        time.sleep(10)
+
+        # Check that is optimal
+        time.sleep(7)
         status = cf_client.get_status(execution_id=execution["id"])
         self.assertEqual(1, status["state"])
