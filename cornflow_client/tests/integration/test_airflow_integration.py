@@ -61,7 +61,7 @@ class TestAirflowClient(TestCase):
         instance = cf_client.create_instance(data, "test_example", "test_description")
         execution = cf_client.create_execution(
             instance_id=instance["id"],
-            config={"solver": "PULP_CBC_CMD", "timeLimit": 60},
+            config={"solver": "PULP_CBC_CMD", "timeLimit": 100},
             name="test_execution",
             description="execution_description",
             schema="solve_model_dag",
@@ -72,6 +72,6 @@ class TestAirflowClient(TestCase):
         self.assertIn("dag_run_id", response.json().keys())
         status = cf_client.get_status(execution_id=execution["id"])
         self.assertEqual(STATUS_NOT_SOLVED, status["state"])
-        time.sleep(10)
+        time.sleep(15)
         status = cf_client.get_status(execution_id=execution["id"])
         self.assertEqual(STATUS_OPTIMAL, status["state"])
