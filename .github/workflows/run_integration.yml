@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: baobabsoluciones/cornflow-server
-          ref: feature/test_client
+          ref: master
           path: ./cornflow-server
       - name: Clone dags from cornflow dags public repo
         uses: actions/checkout@master
