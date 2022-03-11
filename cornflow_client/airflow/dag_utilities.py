@@ -39,7 +39,6 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retry_delay": timedelta(minutes=1),
-    "schedule_interval": None,
 }
 
 
@@ -85,7 +84,7 @@ def connect_to_cornflow(secrets):
         scheme = "http"
     url = f"{scheme}://{conn.hostname}"
     if conn.port:
-        url=f"{url}:{conn.port}"
+        url = f"{url}:{conn.port}"
     if conn.path:
         url = urljoin(url, conn.path)
     airflow_user = CornFlow(url=url)
